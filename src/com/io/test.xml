@@ -1,0 +1,51 @@
+<soapenv:Envelope
+	xmlns:mes="http://Paymetric/XiPaySoap30/message/"
+	xmlns:soapenv="http://schemas.xmlsoap.org/soap/envelope/">
+	<soapenv:Header
+		xmlns:wsa="http://www.w3.org/2005/08/addressing">
+		<wsse:Security
+			xmlns:wsse="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-secext-1.0.xsd"
+			xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd">
+			<wsse:UsernameToken
+				wsu:Id="UsernameToken-3c52cc57-4ab6-4e3c-9c4e-7aca3088a013">
+				<wsse:Username>Paymetric\WSAHoneywell_ACS_DEV</wsse:Username>
+				<wsse:Password
+					Type="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-username-token-profile-1.0#PasswordText">password8*</wsse:Password>
+			</wsse:UsernameToken>
+		</wsse:Security>
+		<wsa:Action>Paymetric/XiPaySoap30/action/XiGGE.SoapOp</wsa:Action>
+		<wsa:To>https://cert-xipayapi.paymetric.com/PMXIGGE/XiPay30WS.asmx
+		</wsa:To>
+	</soapenv:Header>
+	<soapenv:Body>
+		<mes:SoapOp>
+			<mes:pPacketsIn>
+				<mes:count>1</mes:count>
+				<mes:xipayvbresult>false</mes:xipayvbresult>
+				<mes:packets>
+					<mes:ITransactionHeader>
+						{% assign invValue = Data.Invoice.Amount | times: 0.2 %}
+						{% assign
+						authAmount = Data.Invoice.Amount | plus :invValue %}
+						<mes:Amount>{{authAmount}}</mes:Amount>
+						<mes:CardExpirationDate>{{Data.default__CreditCardProcessing[0].ccValidTill__c}}</mes:CardExpirationDate>
+						<mes:CardHolderName>{{Data.default__CreditCardProcessing[0].ccHolderName__c}}</mes:CardHolderName>
+						<mes:CardNumber>{{Data.default__CreditCardProcessing[0].ccToken__c}}</mes:CardNumber>
+						<mes:CardType>{{Data.default__CreditCardProcessing[0].ccType__c}}</mes:CardType>
+						<mes:CardDataSource>E</mes:CardDataSource>
+						<mes:CurrencyKey>{{Data.Account.Currency}}</mes:CurrencyKey>
+						{% assign merchantId= "ZMID"| append : Data.Account.Currency | append : Data.Account.CompanyCode__c %}
+						<mes:MerchantID>{{merchantId}}</mes:MerchantID>
+						<mes:PacketOperation>1</mes:PacketOperation>
+						<mes:InfoItems>
+							<mes:InfoItem>
+								<mes:Key>TR_TRANS_TYPE</mes:Key>
+								<mes:Value>7</mes:Value>
+							</mes:InfoItem>
+						</mes:InfoItems>
+					</mes:ITransactionHeader>
+				</mes:packets>
+			</mes:pPacketsIn>
+		</mes:SoapOp>
+	</soapenv:Body>
+</soapenv:Envelope>
