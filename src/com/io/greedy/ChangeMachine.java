@@ -9,7 +9,7 @@ public class ChangeMachine {
 	public static void main(String[] args) {
 
 		System.out.println(1 + " --> " + getMinCoins(1));
-		System.out.println(17 + " --> " + getMinCoins(17));
+		System.out.println(17 + " --> " + getMinCoins(15));
 		System.out.println(33 + " --> " + getMinCoins(33));
 		System.out.println(99 + " --> " + getMinCoins(99)); 
 
