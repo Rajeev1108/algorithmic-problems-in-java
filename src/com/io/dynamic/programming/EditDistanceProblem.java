@@ -31,7 +31,7 @@ public class EditDistanceProblem {
 	}
 
 	
-	public static void minEditDistanceTabulation(String str1, String str2) {
+	public static int minEditDistanceTabulation(String str1, String str2) {
 
 		int m = str1.length();
 		int n = str2.length();
